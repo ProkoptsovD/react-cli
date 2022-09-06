@@ -16,7 +16,9 @@ Options
 By default all three files and parent directory are generated
 
 ================================================
+
 `--template <component type>` or `-T <component type` - allows to generate file with template of functional or class component. Types `func` or `class` are accepted. Functional component template is default
+
 ================================================
 
 `--styels <styles format>` or `-S <styles format>` - here you can pick up your prefered way of styling components.
