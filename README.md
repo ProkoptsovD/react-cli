@@ -5,9 +5,11 @@
 `rlc` - name of package
 
 ================================================
+
 `--generate --component <component name>` or `-g -c <component name>` - generetes folder and files with the passed name: file with functional React component, index file for reexport and file with styles
 
 =================================================
+
 `--skip <option>` or `-s <option>` allows not to render some files or folder.
 Options
 `reexport` - skips index file with reexport `--skip reexport`
