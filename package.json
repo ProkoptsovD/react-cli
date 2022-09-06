@@ -1,0 +1,25 @@
+{
+  "name": "react-cli",
+  "version": "1.0.0",
+  "description": "cli for generating react components",
+  "main": "bin/index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "cli",
+    "react",
+    "node.js"
+  ],
+  "bin": {
+    "rlc": "./bin/index.js"
+  },
+  "author": "PropkoptosvD",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.7.14"
+  },
+  "dependencies": {
+    "commander": "^9.4.0"
+  }
+}
