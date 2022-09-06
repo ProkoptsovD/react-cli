@@ -1,5 +1,5 @@
 {
-  "name": "react-cli",
+  "name": "react-cli-rlc",
   "version": "1.0.0",
   "description": "cli for generating react components",
   "main": "bin/index.js",
@@ -12,7 +12,7 @@
     "node.js"
   ],
   "bin": {
-    "rlc": "./bin/index.js"
+    "rlc": "bin/index.js"
   },
   "author": "PropkoptosvD",
   "license": "ISC",
@@ -21,5 +21,13 @@
   },
   "dependencies": {
     "commander": "^9.4.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ProkoptsovD/react-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ProkoptsovD/react-cli/issues"
+  },
+  "homepage": "https://github.com/ProkoptsovD/react-cli#readme"
 }

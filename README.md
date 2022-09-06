@@ -1,5 +1,9 @@
 ### Simple CLI for generating react components like Angular CLI does
 
+### How to install
+
+It's easy, just run `npm i react-cli-rlc`
+
 ## Commands
 
 `rlc` - name of package
