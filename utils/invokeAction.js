@@ -8,6 +8,7 @@ program
   .option("-s, --skip <options...>", "choose what to skip")
   .option("-T, --template <type>", "choose type of component - functional or class")
   .option("-S, --styles <type>", "choose styles: styled components, css, scss")
+  .option("-ext, --extension <file extension>", "choose file extension: js, jsx, ts, tsx")
 
 program.parse(process.argv);
 
@@ -20,10 +21,11 @@ const params = {
     'dir': false
   },
   template: 'func',
-  styles: 'scss'
+  styles: 'css',
+  ext: 'js'
 };
 
-function parseAction ({ generate, component, skip, template, styles }) {
+function parseAction ({ generate, component, skip, template, styles, extension }) {
     if(generate) {
       if(component) {
         // generate component with name
@@ -59,8 +61,10 @@ function parseAction ({ generate, component, skip, template, styles }) {
               break;
           }
         }
+        if(extension) params.ext = extension;
       }
     }
+    console.log(params)
     createFolderWitFiles(params);
 }
 

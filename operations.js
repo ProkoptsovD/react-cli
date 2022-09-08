@@ -9,49 +9,57 @@ const {
 const { capitalize } = require('./utils/capitalize');
 
 const { resolvePath } = require('./utils/resolvePath');
+const { narrowExtension } = require('./utils/narrowExtension');
 
 /**
- * @param {{ pathName: string, fileName: string }} dir object with path to folder and file name to be created 
- * @param {'index' | 'component' | 'styles'} fileType type of file to generate
- * @param {'func' | 'class'} componentType what template to use
- * @param {'js' | 'jsx' | 'ts' | 'tsx' | 'css' | 'scss'} ext file extension
+ * @param {{
+ *  pathName: string,
+ *  fileName: string,
+ *  componentType: 'func' | 'class',
+ *  ext: 'js' | 'jsx' | 'ts' | 'tsx'
+ * }} config
+ * @param { 'index' | 'component' | 'styles' } fileType
  * @return { void } function returns nothing
  */
-const createFile = async ({ pathName, fileName }, fileType, componentType, ext = 'js') => {
+const createFile = async ({ pathName, name, styles, template, ext }, fileType) => {
   try {
-    let name = fileName + 'Component';
+    const capitalizedName = capitalize(name);
+    let fileName = capitalizedName + 'Component';
     let subName = ''
-    let template = '';
+    let templateCode = '';
     let fileExt = ext;
 
     switch(fileType) {
       case 'index':
-        name = 'index';
-        template = indexTemplate(name + subName + '.' + fileExt);
+        templateCode = indexTemplate(capitalizedName + '.' + fileExt);
+        fileName = 'index';
+        fileExt = narrowExtension(fileExt);
         break;
       case 'component':
-        template = componentType === 'func' ? functionalComponentTemplate(fileName) : classComponentTemplate(fileName);
+        const tmplDictionary = { func: functionalComponentTemplate, class: classComponentTemplate }
+        templateCode = tmplDictionary[template](capitalizedName);
         break;
       case 'styles':
-        const isStyled = ext === 'styled';
-        template = '';
-        subName = ext === 'styled' ? '.styled' : '.module';
-        fileExt = isStyled ? 'js' : ext;
+        const isStyled = styles === 'styled';
+
+        templateCode = '';
+        subName = isStyled ? '.styled' : '.module';
+        fileExt = isStyled ? 'js' : styles;
       default:
-        template = '';
+        templateCode = '';
       ;
     }
 
-    const fileNameWithExt = name + subName + '.' + fileExt;
+    const fileNameWithExt = fileName + subName + '.' + fileExt;
     const resolvedPath = path.resolve(pathName + '/' + fileNameWithExt);
 
-    fs.writeFile(resolvedPath, template, 'utf8');
+    fs.writeFile(resolvedPath, templateCode, 'utf8');
   } catch (err) {
     console.error(err);
   }
 } 
 
-const createFolder = async ({ name }) => {
+const createFolder = async (name) => {
     try {
         const directoryWhereCreateComponent = resolvePath();
         const dirContent = await fs.readdir(directoryWhereCreateComponent);
@@ -67,29 +75,30 @@ const createFolder = async ({ name }) => {
        
         await fs.mkdir(dirNameWithPath);
 
-        return { pathName: dirNameWithPath, fileName: capitalizedName};
+        return { pathName: dirNameWithPath, name: capitalizedName};
       } catch (err) {
         console.error(err);
       }
 }
 
-const createFolderWitFiles = async (params) => {
-  let dir = null;
+const createFolderWitFiles = async ({ skip, ...restArgs }) => {
+  let config = null;
 
-  if(params?.skip?.dir) {
-    dir = { pathName: resolvePath(), fileName: capitalize(params?.name) };
+  if(skip?.dir) {
+    config = { ...restArgs, pathName: resolvePath() };
 
-    if(!params?.skip?.reexport) createFile(dir, 'index');
-    if(!params?.skip?.styles) createFile(dir, 'styles', null, params?.styles ?? 'css');
+    if(!skip?.reexport) createFile(config, 'index');
+    if(!skip?.styles) createFile(config, 'styles');
   
   } else {
-    dir = await createFolder(params);
+    const dirNameAndPath = await createFolder(restArgs?.name);
+    config = { ...restArgs, ...dirNameAndPath };
 
-    if(!params?.skip?.reexport) createFile(dir, 'index');
-    if(!params?.skip?.styles) createFile(dir, 'styles', null, params?.styles ?? 'css');
+    if(!skip?.reexport) createFile(config, 'index');
+    if(!skip?.styles) createFile(config, 'styles');
   }
   
-  createFile(dir, 'component', params.template);
+  createFile(config, 'component');
 }
 
 module.exports = {
