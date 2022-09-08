@@ -64,7 +64,6 @@ function parseAction ({ generate, component, skip, template, styles, extension }
         if(extension) params.ext = extension;
       }
     }
-    console.log(params)
     createFolderWitFiles(params);
 }
 
