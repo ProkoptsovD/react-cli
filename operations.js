@@ -31,7 +31,7 @@ const createFile = async ({ pathName, name, styles, template, ext }, fileType) =
 
     switch(fileType) {
       case 'index':
-        templateCode = indexTemplate(capitalizedName + '.' + fileExt);
+        templateCode = indexTemplate(fileName);
         fileName = 'index';
         fileExt = narrowExtension(fileExt);
         break;
