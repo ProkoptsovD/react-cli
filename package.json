@@ -1,6 +1,6 @@
 {
   "name": "react-cli-rlc",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "cli for generating react components",
   "main": "bin/index.js",
   "scripts": {
